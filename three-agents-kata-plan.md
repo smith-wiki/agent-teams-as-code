@@ -48,6 +48,8 @@ Do not edit, merge, deploy, or claim final approval.
 
 These are three independent roles, not an automatic pipeline. Prompt text is guidance, not enforcement: model selection, enabled tools, filesystem/network access, Kubernetes security context, and approval policy must be configured separately.
 
+The [execution-boundaries card](agent-execution-boundaries.md) specifies where each agent's image, repository access, MCP servers, and secret references would be declared and where their permissions would actually be enforced. None of those grants follows from `roles/*.md`.
+
 For unattended turns, define an explicit OMP tool/approval policy: ACP client permission requests can be rejected when no interactive approval is available; `--auto-approve` is not a substitute for capability scoping ([OMP ACP approval behavior](https://github.com/can1357/oh-my-pi/blob/04f58a91d141bb0e7c5f7679c2235945ae813057/docs/approval-mode.md#acp-sessions)).
 
 ## The ACP seam keeps the harness replaceable
