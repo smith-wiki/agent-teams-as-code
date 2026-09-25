@@ -2,6 +2,12 @@
 
 **Fit: yes, this is almost certainly the Microsoft “apm” you recalled; no, it is not an agent-team control plane.** Microsoft’s [`microsoft/apm`](https://github.com/microsoft/apm) is Agent Package Manager: it resolves, installs and projects reusable agent configuration into multiple harnesses.
 
+## Input and output
+
+APM is a **local package manager and adapter for agent-harness configuration**, not an agent runtime. Its input is a package directory: `apm.yml` identifies the package and optionally declares targets, package/MCP dependencies and scripts; `.apm/` contains authored primitives such as `.apm/agents/reviewer.agent.md` (a named role with instructions and optional model/tool hints). `apm install` also reads referenced packages and, when replaying a pinned install, `apm.lock.yaml`. `--target copilot,claude` chooses **output formats**, not machines on which agents will run ([package anatomy](https://microsoft.github.io/apm/concepts/package-anatomy/), [install reference](https://microsoft.github.io/apm/reference/cli/install/)).
+
+For example, `apm install --target copilot,claude` in that directory produces harness-readable role files such as `.github/agents/reviewer.agent.md` and `.claude/agents/reviewer.md`, plus a resolved `apm.lock.yaml` and `apm_modules/` when dependencies are installed. Declared MCP dependencies produce harness configuration, not provider accounts or running servers. Separately, `apm compile` can generate root instruction context such as `AGENTS.md` where needed ([agent target mappings](https://microsoft.github.io/apm/producer/author-primitives/instructions-and-agents/#what-compiles-where-1), [install reference](https://microsoft.github.io/apm/reference/cli/install/)). **The output is files and configuration, not an agent process, an answer to a task, or an event-handling service.** The harness consumes these files later; a caller or operator supplies the actual task, execution, credentials and lifecycle ([installation boundary](apm-install-deployment.md)).
+
 A minimal current working-draft manifest can package an agent primitive and an MCP dependency:
 
 ```yaml
